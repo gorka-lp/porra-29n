@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Porra Electoral 29N · Congreso de los Diputados 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,600;0,6..72,700;1,6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://gorka-lp.github.io/porra-29n/styles.css" />
+</head>
+<body>
+  <!-- TOP TICKER BAR (US ELECTION NIGHT STYLE) -->
+  <div class="top-ticker">
+    <div class="container ticker-inner">
+      <div class="ticker-badge"><span class="pulse-dot"></span> EDICIÓN 29-N · 2026</div>
+      <div class="ticker-meta">CONGRESO DE LOS DIPUTADOS · <strong>350 ESCAÑOS</strong> · MAYORÍA ABSOLUTA: <strong>176</strong></div>
+      <span class="ticker-link disabled-link" id="tickerResultsLink" title="Disponible la noche electoral (29-N)">RESULTADOS EN DIRECTO (DISPONIBLE EL 29-N)</span>
+    </div>
+  </div>
+
+  <!-- EDITORIAL HEADER -->
+  <header class="site-header">
+    <div class="container header-grid">
+      <div class="brand">
+        <svg class="brand-logo" viewBox="0 0 64 64" width="44" height="44" aria-hidden="true">
+          <polygon points="32,4 56,18 32,32 8,18" fill="none" stroke="#1E293B" stroke-width="2.5"/>
+          <path d="M32,4 L56,18" stroke="#16A34A" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M8,18 L32,4" stroke="#0284C7" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M8,18 L8,46" stroke="#DC2626" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M8,46 L32,60" stroke="#7C3AED" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M32,60 L56,46" stroke="#F59E0B" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M21,31 L30,38 L49,25" fill="none" stroke="#0F172A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <span class="kicker">PORRA INTERNA · ELECCIONES GENERALES</span>
+          <h1>Elecciones <span class="accent-year">29N</span></h1>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <a href="index.html" class="nav-btn active">1. Enviar Pronóstico</a>
+        <button type="button" class="nav-btn disabled-nav" id="navResultsBtn" disabled title="Se activará la noche electoral del 29-N">2. Resultados en Directo <span class="soon-tag">29-N</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-layout">
+    <!-- INTRO + LIVE COUNTER & HEMICYCLE BAR -->
+    <section class="card hero-card">
+      <div class="hero-top">
+        <div>
+          <span class="eyebrow">PAPELETA OFICIAL DE PARTICIPACIÓN</span>
+          <h2>Reparte los 350 escaños del Congreso</h2>
+          <p class="subtitle">Identifícate primero con tu <strong>nombre y apellido</strong> y tu <strong>correo electrónico</strong>. Solo se permite una porra por correo: si envías una nueva con la misma dirección, sustituirá automáticamente a la anterior.</p>
+        </div>
+        <div class="quick-actions">
+          <button type="button" id="btnLoadPolls" class="btn-outline" disabled title="Completa tus datos para activar">
+            Cargar encuesta GAD3 · LP
+          </button>
+          <button type="button" id="btnReset" class="btn-ghost" disabled>Poner a 0</button>
+        </div>
+      </div>
+
+      <!-- LIVE COUNTER & HEMICYCLE BAR -->
+      <div class="seat-meter-box" id="meterBox">
+        <div class="meter-header">
+          <div class="meter-stats-row">
+            <div>
+              <span class="meter-label">ESCAÑOS ASIGNADOS</span>
+              <div class="meter-numbers">
+                <span id="totalAssigned" class="big-count">0</span>
+                <span class="total-cap">/ 350</span>
+              </div>
+            </div>
+            <div class="meter-divider"></div>
+            <div>
+              <span class="meter-label">POR ASIGNAR</span>
+              <div class="meter-numbers">
+                <span id="remainingSeats" class="big-count remaining-num">350</span>
+                <span class="total-cap">restantes</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="meter-status-wrap">
+            <span id="seatStatusBadge" class="status-badge pending">Faltan 350 escaños por asignar</span>
+            <span class="majority-note">Mayoría absoluta: 176 escaños</span>
+          </div>
+        </div>
+
+        <!-- Stacked visual bar (US Decision Desk style) -->
+        <div class="stacked-bar-wrapper">
+          <div class="majority-marker" style="left: 50.28%;" title="Mayoría absoluta (176)">
+            <span>176</span>
+          </div>
+          <div class="stacked-bar" id="stackedBar"></div>
+        </div>
+        <div class="stacked-legend" id="stackedLegend"></div>
+      </div>
+    </section>
+
+    <!-- FORM -->
+    <form id="porraForm" novalidate>
+      <!-- STEP 1: MANDATORY IDENTIFICATION -->
+      <section class="card participant-card">
+        <div class="id-card-header">
+          <span class="eyebrow">PASO 1 · IDENTIFICACIÓN OBLIGATORIA</span>
+          <span id="idStatusPill" class="id-status-pill locked">🔒 Rellena ambos campos para desbloquear la papeleta</span>
+        </div>
+        <div class="form-row">
+          <div class="input-group">
+            <label for="participantName">Nombre y apellido *</label>
+            <input type="text" id="participantName" name="nombre" placeholder="Nombre" required maxlength="60" autocomplete="name" />
+          </div>
+          <div class="input-group">
+            <label for="participantEmail">Correo electrónico *</label>
+            <input type="email" id="participantEmail" name="email" placeholder="nombre@lasprovincias.es" required maxlength="90" autocomplete="email" />
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: UNIFIED PARTIES LIST -->
+      <section class="card parties-wrapper-card locked-section" id="partiesSection">
+        <div class="parties-section-head">
+          <div>
+            <span class="eyebrow">PASO 2 · REPARTO DE ESCAÑOS</span>
+            <h3>Candidaturas</h3>
+          </div>
+          <span class="remaining-inline-pill" id="remainingInlinePill">Quedan <strong>350</strong> escaños por asignar</span>
+        </div>
+
+        <div id="lockNoticeBanner" class="lock-notice-banner">
+          Introduce tu <strong>nombre y apellido</strong> y un <strong>correo electrónico válido</strong> arriba para empezar a repartir escaños.
+        </div>
+
+        <div class="parties-grid" id="partiesGrid"></div>
+      </section>
+
+      <!-- CENTERED SUBMIT BAR (SIN TEXTOS REPETIDOS) -->
+      <section class="card submit-card centered-submit">
+        <button type="submit" id="btnSubmit" class="btn-primary btn-submit-lg" disabled>
+          Registrar mi porra del 29-N
+        </button>
+      </section>
+    </form>
+  </main>
+
+  <!-- POP-UP MODAL DE CONFIRMACIÓN CON BROMA PERSONALIZADA SEGÚN PRONÓSTICO -->
+  <div id="confirmModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+    <div class="modal-card confirm-modal-card">
+      <button type="button" id="btnCloseConfirmModal" class="btn-close modal-close-float" aria-label="Cerrar">✕</button>
+
+      <div class="confirm-ok-badge">✓ PRONÓSTICO REGISTRADO CORRECTAMENTE</div>
+      <h3 id="confirmModalTitle" class="confirm-title">¡Gracias por participar!</h3>
+      <p id="confirmModalMeta" class="confirm-meta"></p>
+
+      <!-- Tarjeta gráfica / foto dinámica según el escenario pronosticado -->
+      <div class="joke-showcase" id="jokeShowcase">
+        <div class="joke-visual" id="jokeVisual"></div>
+        <div class="joke-copy">
+          <span class="joke-tag" id="jokeTag">CRÓNICA DE TU RESULTADO</span>
+          <h4 class="joke-headline" id="jokeHeadline"></h4>
+        </div>
+      </div>
+
+      <!-- Mini resumen numérico de su apuesta -->
+      <div class="confirm-summary-pills" id="confirmSummaryPills"></div>
+
+      <div class="confirm-actions">
+        <button type="button" id="btnModalAccept" class="btn-primary">Cerrar y volver a la papeleta</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>Elecciones Generales 29 de noviembre de 2026 · Porra Interna</span>
+      <span>1 participación por correo electrónico · Suma exacta: 350 escaños</span>
+    </div>
+  </footer>
+
+  <script src="https://gorka-lp.github.io/porra-29n/config.js"></script>
+  <script src="https://gorka-lp.github.io/porra-29n/app.js"></script>
+</body>
+</html>
