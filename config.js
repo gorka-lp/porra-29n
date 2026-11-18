@@ -20,10 +20,10 @@ const PORRA_CONFIG = {
   majoritySeats: 176,
 
   // Pega aquí tu endpoint de Google Apps Script (termina en /exec)
-  appsScriptUrl: "",
+  appsScriptUrl: "https://script.google.com/macros/s/AKfycbxK0Ao5akb9hckzM1daTfFu-dH7Y4l0FAmVlKgBKCRgl0UVe5PmtMCk2AXJVYQu0fVM/exec",
 
   // Pega aquí la URL CSV publicada de tu Google Sheet (termina en output=csv)
-  googleSheetCsvUrl: "",
+  googleSheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQBwLLBiw5lrG1GcP6F6pKaOM3ylfSl-UnENdY5hbnlTocGDdKny6XtYoY5WcYDZf2s6S0T3Lny2Dqi/pub?gid=0&single=true&output=csv",
 
   // Participante oficial de referencia (Encuesta GAD3 - Las Provincias, 09/11/2026)
   pollBenchmark: {
